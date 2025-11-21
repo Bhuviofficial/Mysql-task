@@ -153,3 +153,6 @@ MySQL Server 8+
 If you run queries multiple times, remove duplicates before re-running inserts.
 
 Safe update mode must be disabled for UPDATE statements.
+
+REPOLINK:
+git-clone:https://github.com/Bhuviofficial/Mysql-task
