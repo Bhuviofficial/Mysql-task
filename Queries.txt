@@ -1,0 +1,153 @@
+Question 1:-Retrieve all customers who have placed an order in the last 30 days.
+Answer:-
+
+SELECT DISTINCT c.*
+FROM customers c
+JOIN orders o ON c.id = o.customer_id
+WHERE o.order_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY);
+
+Output:-
+
+1	Bhuvi	bhuvi@gmail.com	banglore
+2	Alice	alice@example.com	chennai
+3	Sana	sana@example.com	Hyderabad
+
+Question 2:-Get the total amount of all orders placed by each customer.
+Answer:-
+
+SELECT c.name, SUM(o.total_amount) AS total_spent
+FROM customers c
+JOIN orders o ON c.id = o.customer_id
+GROUP BY c.id, c.name;
+
+Output:-
+
+Bhuvi	630.00
+Alice	600.00
+Sana	750.00
+
+Question 3:-Update the price of Product C to 45.00.
+Answer:-
+
+UPDATE products
+SET price = 45.00
+WHERE id = 3;
+
+select * from products;
+
+Output:-
+
+1	Product A	50.00	Description A
+2	Product B	70.00	Description B	
+3	Product C	45.00	Description C	
+4	Product D	120.00	Description D	
+
+Question 4:-Add a new column discount to the products table.
+Answer:-
+
+ALTER TABLE products
+ADD COLUMN discount DECIMAL(5,2) DEFAULT 0;
+
+select*from products;
+
+Output:-
+
+1	Product A	50.00	Description A	0.00
+2	Product B	70.00	Description B	0.00
+3	Product C	45.00	Description C	0.00
+4	Product D	120.00	Description D	0.00
+
+Question 5:- Retrieve the top 3 products with the highest price.
+Answer:-
+
+SELECT *
+FROM products
+ORDER BY price DESC
+LIMIT 3;
+
+Output:-
+
+4	Product D	120.00	Description D	0.00
+2	Product B	70.00	Description B	0.00
+1	Product A	50.00	Description A	0.00
+
+Question 6:-Get the names of customers who have ordered Product A.
+Answer:-
+
+SELECT DISTINCT c.name
+FROM customers c
+JOIN orders o ON c.id = o.customer_id
+JOIN order_items oi ON o.id = oi.order_id
+JOIN products p ON oi.product_id = p.id
+WHERE p.name = 'Product A';
+
+Output:-
+
+Bhuvi
+Alice
+
+Question 7:-Join the orders and customers tables to retrieve the customer's name and order date for each order. 
+
+Answer:-
+
+SELECT c.name, o.order_date
+FROM customers c
+JOIN orders o ON c.id = o.customer_id;
+
+Output:-
+
+Bhuvi	2025-11-10
+Alice	2025-11-15
+Bhuvi	2025-10-11
+Sana	2025-11-20
+
+Question 8:-Retrieve the orders with a total amount greater than 150.00.
+
+Answer:-
+
+SELECT *
+FROM orders
+WHERE total_amount > 150.00;
+
+Output:-
+
+2	2	2025-11-15	200.00
+4	3	2025-11-20	250.00
+
+Question 9:-Normalize the database by creating a separate table for order items and updating the orders table to reference the order_items table.
+Answer:-
+
+CREATE TABLE order_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    product_id INT,
+    quantity INT DEFAULT 1,
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+INSERT INTO order_items (order_id, product_id, quantity) VALUES
+(1, 1, 1),
+(2, 2, 2),   
+(2, 1, 1),   
+(3, 3, 1),
+(4, 4, 1);
+
+select*from orders;
+
+Output:-
+
+1	1	2025-11-10	120.00
+2	2	2025-11-15	200.00
+3	1	2025-10-11	90.00
+4	3	2025-11-20	250.00
+
+Question 10:-Retrieve the average total of all orders.
+Answer:-
+
+SELECT AVG(total_amount) AS average_order_total
+FROM orders;
+
+Output:-
+
+165.000000

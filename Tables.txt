@@ -1,0 +1,47 @@
+CREATE DATABASE ecommerce;
+USE ecommerce;
+
+CREATE TABLE customers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    address VARCHAR(200)
+);
+CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    order_date DATE,
+    total_amount DECIMAL(10,2),
+    FOREIGN KEY (customer_id) REFERENCES customers(id)
+);
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    price DECIMAL(10,2),
+    description VARCHAR(200)
+);
+select * from customers;
+
+
+INSERT INTO customers (name, email, address) VALUES
+('Bhuvi', 'bhuvi@gmail.com', 'banglore'),
+('Alice', 'alice@example.com', 'chennai'),
+('Sana', 'sana@example.com', 'Hyderabad');
+
+select * from customers;
+
+INSERT INTO products (name, price, description) VALUES
+('Product A', 50.00, 'Description A'),
+('Product B', 70.00, 'Description B'),
+('Product C', 40.00, 'Description C'),
+('Product D', 120.00, 'Description D');
+
+select * from products;
+
+INSERT INTO orders (customer_id, order_date, total_amount) VALUES
+(1, DATE_SUB(CURDATE(), INTERVAL 10 DAY), 120.00),
+(2, DATE_SUB(CURDATE(), INTERVAL 5 DAY), 200.00),
+(1, DATE_SUB(CURDATE(), INTERVAL 40 DAY), 90.00),
+(3, CURDATE(), 250.00);
+
+select * from orders;
